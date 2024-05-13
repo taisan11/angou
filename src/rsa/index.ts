@@ -1,4 +1,4 @@
-/*generate Key for RSA*/
+/**generate Key for RSA*/
 export function genKeyRss(): Promise<CryptoKeyPair> {
     return crypto.subtle.generateKey(
         {
@@ -11,19 +11,19 @@ export function genKeyRss(): Promise<CryptoKeyPair> {
         ["sign", "verify"] //can be any combination of "sign" and "verify"
     ) as Promise<CryptoKeyPair>;
 }
-/*Convert to exportable key for RSA*/
+/**Convert to exportable key for RSA*/
 export function exportKeyRss(key: CryptoKey): Promise<JsonWebKey> {
     return crypto.subtle.exportKey("jwk", key) as Promise<JsonWebKey>;
 }
-/* import exported keys for RSA */
+/**  import exported keys for RSA */
 export function importKeyRss(key: JsonWebKey): Promise<CryptoKey> {
     return crypto.subtle.importKey("jwk", key, {name: "RSA-PSS", hash: {name: "SHA-256"}}, true, ["verify"]) as Promise<CryptoKey>;
 }
-/* key to use and sign for RSA */
+/** key to use and sign for RSA */
 export function signRss(key: CryptoKey, data: BufferSource): Promise<BufferSource> {
     return crypto.subtle.sign({ name: "RSA-PSS", saltLength: 20 }, key, data) as Promise<BufferSource>;
 }
-/*Verify if it is a real signature for RSA*/
+/**Verify if it is a real signature for RSA*/
 export function verifyRss(key: CryptoKey, signature: BufferSource, data: BufferSource): Promise<boolean> {
     return crypto.subtle.verify({ name: "RSA-PSS", saltLength: 20 }, key, signature, data) as Promise<boolean>;
 }
