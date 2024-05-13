@@ -19,10 +19,10 @@ export function importKeyRss(key: JsonWebKey): Promise<CryptoKey> {
     return crypto.subtle.importKey("jwk", key, {name: "RSA-PSS", hash: {name: "SHA-256"}}, true, ["verify"]) as Promise<CryptoKey>;
 }
 
-export function signRss(key: CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
-    return crypto.subtle.sign("RSA-PSS", key, data) as Promise<ArrayBuffer>;
+export function signRss(key: CryptoKey, data: BufferSource): Promise<BufferSource> {
+    return crypto.subtle.sign({ name: "RSA-PSS", saltLength: 20 }, key, data) as Promise<BufferSource>;
 }
 
-export function verifyRss(key: CryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
-    return crypto.subtle.verify("RSA-PSS", key, signature, data) as Promise<boolean>;
+export function verifyRss(key: CryptoKey, signature: BufferSource, data: BufferSource): Promise<boolean> {
+    return crypto.subtle.verify({ name: "RSA-PSS", saltLength: 20 }, key, signature, data) as Promise<boolean>;
 }
